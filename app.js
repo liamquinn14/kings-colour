@@ -1,5 +1,30 @@
 let newColor;
-let answered = false
+function handleAnswerMouseOver() {
+  this.classList.add('hovered');
+}
+
+function handleQuestionMouseOut() {
+  this.classList.remove('hovered');
+}
+
+// Add event listeners for hover effect
+function addHoverEffectListeners() {
+  document.querySelectorAll('.answer').forEach(function (answer) {
+    answer.addEventListener('mouseover', handleAnswerMouseOver);
+  });
+
+  document.getElementById('question').addEventListener('mouseout', handleQuestionMouseOut);
+}
+
+// Remove event listeners for hover effect
+function removeHoverEffectListeners() {
+  document.querySelectorAll('.answer').forEach(function (answer) {
+    answer.removeEventListener('mouseover', handleAnswerMouseOver);
+  });
+
+  document.getElementById('question').removeEventListener('mouseout', handleQuestionMouseOut);
+}
+
 const questions = {
   red: [
     {
@@ -534,17 +559,18 @@ let currentQuestionIndex = -1;
 function startQuiz() {
   document.getElementById("intro-container").style.display = "none";
   document.getElementById("quiz-container").style.display = "block";
-  document.body.style.cssText = 'background-image: none'
+  document.body.style.cssText = 'background-image: none';
+  addHoverEffectListeners(); // Add hover effect listeners when quiz starts
   nextQuestion();
 }
 
 function nextQuestion() {
-  answered = false
     do {
       newColor = getRandomColor();
     } while (!questions[newColor] || questions[newColor].length === 0);
   
   document.getElementById('question').style.backgroundColor = newColor
+  addHoverEffectListeners();
 
   if (newColor === "black") {
     document.getElementById('question').style.color = "white"
@@ -591,13 +617,12 @@ function nextQuestion() {
     button.style.color = "white"
   })
 
-  document.querySelectorAll('.answer').addEventListener('mouseover', function () {
-    this.classList.add('hovered');
-  });
-  
-  document.getElementById('question').addEventListener('mouseout', function () {
-    this.classList.remove('hovered');
-  });
+document.querySelectorAll('.answer').forEach(function (answer) {
+  answer.addEventListener('mouseover', handleAnswerMouseOver);
+});
+
+document.getElementById('question').addEventListener('mouseout', handleQuestionMouseOut);
+
 }
   
 
@@ -611,14 +636,18 @@ function checkAnswer(index) {
   const currentQuestion = questions[newColor][currentQuestionIndex];
   const selectedAnswer = currentQuestion.answers[index];
 
+  removeHoverEffectListeners()
+
   if (index === currentQuestion.correctIndex) {
     document.body.style.backgroundColor = "#4CAF50";
     document.getElementById("question-container").style.backgroundColor = "#4CAF50";
     document.getElementById('question').style.backgroundColor = "#4CAF50"
+    document.getElementById('question').textContent = "CORRECT"
   } else {
     document.body.style.backgroundColor = "#FF5733";
     document.getElementById("question-container").style.backgroundColor = "#FF5733";
     document.getElementById('question').style.backgroundColor = "#FF5733"
+    document.getElementById('question').textContent = "WRONG"
   }
 
   document.querySelectorAll(".answer").forEach((button) => {
