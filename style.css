@@ -6,6 +6,8 @@ body {
     transition: background-color 0.5s;
     width: 100vw;
     height: 100vh;
+    background-image: url(flag-background.jpg);
+    background-size: cover;
   }
 
   #quiz-container {
@@ -53,6 +55,10 @@ body {
     padding: 1rem;
   }
 
-  .answer:hover {
-    background-color: silver;
+  .next-btn:hover {
+    background-color: #4baaf9;
   }
+
+  .answer:hover {
+  background-color: rgb(96, 96, 96) !important;
+}

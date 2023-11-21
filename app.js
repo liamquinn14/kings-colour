@@ -1,4 +1,5 @@
 let newColor;
+let answered = false
 const questions = {
   red: [
     {
@@ -274,7 +275,7 @@ green:
       },
       {
         question: "GREEN",
-        answers: [ "Russia", "Rwanda", "Equatorial Guinea", "Brazil"],
+        answers: [ "Russia", "Rwanda", "Guinea", "Brazil"],
         correctIndex: 0
       },
       {
@@ -384,6 +385,56 @@ green:
       answers: [ "Germany", "Italy", "Australia", "Honduras"],
       correctIndex: 0
     },
+    {
+        question: "WHITE",
+        answers: [ "Niger", "United States", "Namibia", "China"],
+        correctIndex: 3
+      },
+      {
+        question: "WHITE",
+        answers: [ "North Macedonia", "Kiribati", "Monaco", "Malta"],
+        correctIndex: 0
+      },
+      {
+        question: "WHITE",
+        answers: [ "Saudi Arabia", "Chile", "Liechtenstein", "Peru"],
+        correctIndex: 2
+      },
+      {
+        question: "WHITE",
+        answers: [ "Georgia", "Vietnam", "Indonesia", "Russia"],
+        correctIndex: 1
+      },
+      {
+        question: "WHITE",
+        answers: [ "Rwanda", "Kenya", "Sudan", "Costa Rica"],
+        correctIndex: 0
+      },
+      {
+        question: "WHITE",
+        answers: [ "Tanzania", "England", "Peru", "Poland"],
+        correctIndex: 0
+      },
+      {
+        question: "WHITE",
+        answers: [ "Israel", "Panama", "Moldova", "Phillipines"],
+        correctIndex: 2
+      },
+      {
+        question: "WHITE",
+        answers: [ "Switzerland", "Cyprus", "Mexico" , "Mauritania"],
+        correctIndex: 3
+      },
+      {
+        question: "WHITE",
+        answers: [ "Somalia", "Argentina", "Sao Tome and Principe", "Lebanon"],
+        correctIndex: 2
+      },
+      {
+        question: "WHITE",
+        answers: [ "Eritrea", "Croatia", "Niger", "Japan"],
+        correctIndex: 0
+      },
   ],
   black: [
     {
@@ -416,6 +467,12 @@ green:
       answers: [ "Jordan", "Brunei", "Syria", "Indonesia"],
       correctIndex: 3
     },
+    {
+      question: "BLACK",
+      options: ["Germany", "South Africa", "Japan", "Jamaica"],
+      correctIndex: 2
+    }
+    
   ],
 yellow: [
   {
@@ -471,19 +528,22 @@ yellow: [
 ]
 };
 
-const backgroundColors = ["red", "blue", "green", "white", "black", "yellow"]
- // "yellow", "gold", "white", "black", "purple", "orange"];
+const backgroundColors = ["yellow","red", "blue", "green", "white", "black"]
 let currentQuestionIndex = -1;
 
 function startQuiz() {
   document.getElementById("intro-container").style.display = "none";
   document.getElementById("quiz-container").style.display = "block";
+  document.body.style.cssText = 'background-image: none'
   nextQuestion();
 }
 
 function nextQuestion() {
-  newColor = getRandomColor();
-
+  answered = false
+    do {
+      newColor = getRandomColor();
+    } while (!questions[newColor] || questions[newColor].length === 0);
+  
   document.getElementById('question').style.backgroundColor = newColor
 
   if (newColor === "black") {
@@ -508,11 +568,15 @@ function nextQuestion() {
   document.getElementById("question").textContent = currentQuestion.question;
 
   const answerButtons = document.querySelectorAll(".answer");
+  if (!currentQuestion.answers) {
+    nextQuestion()
+  } else {
   for (let i = 0; i < currentQuestion.answers.length; i++) {
     answerButtons[i].textContent = currentQuestion.answers[i];
     answerButtons[i].style.backgroundColor = "black";
     answerButtons[i].style.color = "white";
     answerButtons[i].disabled = false;
+    }
   }
 
   if(newColor === "black")
@@ -526,7 +590,16 @@ function nextQuestion() {
     button.style.backgroundColor = "black"
     button.style.color = "white"
   })
+
+  document.querySelectorAll('.answer').addEventListener('mouseover', function () {
+    this.classList.add('hovered');
+  });
+  
+  document.getElementById('question').addEventListener('mouseout', function () {
+    this.classList.remove('hovered');
+  });
 }
+  
 
 function getRandomColor() {
   const randomIndex = Math.floor(Math.random() * backgroundColors.length);
@@ -558,6 +631,358 @@ function checkAnswer(index) {
   });
 
   // Show the next button immediately
+  document.querySelectorAll(".answer").forEach((button) => {
+    if (button.textContent === "Italy") {
+      button.textContent += " 🇮🇹"
+    } else if (button.textContent === "Spain") {
+      button.textContent += " 🇪🇸"
+    } else if (button.textContent === "Brazil") {
+      button.textContent += " 🇧🇷"
+    } else if (button.textContent === "Rwanda") {
+      button.textContent += " 🇷🇼"
+    } else if (button.textContent === "France") {
+      button.textContent += " 🇫🇷"
+    } else if (button.textContent === "China") {
+      button.textContent += " 🇨🇳"
+    } else if (button.textContent === "Canada") {
+      button.textContent += " 🇨🇦"
+    } else if (button.textContent === "Singapore") {
+      button.textContent += " 🇸🇬"
+    } else if (button.textContent === "Ireland") {
+      button.textContent += " 🇮🇪"
+    } else if (button.textContent === "Finland") {
+      button.textContent += " 🇫🇮"
+    } else if (button.textContent === "Estonia") {
+      button.textContent += " 🇪🇪"
+    } else if (button.textContent === "Mali") {
+      button.textContent += " 🇲🇱"
+    } else if (button.textContent === "Malawi") {
+      button.textContent += " 🇲🇼"
+    } else if (button.textContent === "Germany") {
+      button.textContent += " 🇩🇪"
+    } else if (button.textContent === "Sweden") {
+      button.textContent += " 🇸🇪"
+    } else if (button.textContent === "Norway") {
+      button.textContent += " 🇳🇴"
+    } else if (button.textContent === "Japan") {
+      button.textContent += " 🇯🇵"
+    } else if (button.textContent === "Lesotho") {
+      button.textContent += " 🇱🇸"
+    } else if (button.textContent === "Botswana") {
+      button.textContent += " 🇧🇼"
+    } else if (button.textContent === "Ghana") {
+      button.textContent += " 🇬🇭"
+    } else if (button.textContent === "Niger") {
+      button.textContent += " 🇳🇪"
+    } else if (button.textContent === "Nigeria") {
+      button.textContent += " 🇳🇬"
+    } else if (button.textContent === "India") {
+      button.textContent += " 🇮🇳"
+    } else if (button.textContent === "Bangladesh") {
+      button.textContent += " 🇧🇩"
+    } else if (button.textContent === "Pakistan") {
+      button.textContent += " 🇵🇰" 
+    } else if (button.textContent === "Cameroon") {
+      button.textContent += " 🇨🇲"
+    } else if (button.textContent === "South Africa") {
+      button.textContent += " 🇿🇦"
+    } else if (button.textContent === "Namibia") {
+      button.textContent += " 🇳🇦"
+    } else if (button.textContent === "Zambia") {
+      button.textContent += " 🇿🇲"
+    } else if (button.textContent === "Algeria") {
+      button.textContent += " 🇩🇿"
+    } else if (button.textContent === "Tunisia") {
+      button.textContent += " 🇹🇳"
+    } else if (button.textContent === "Democratic Republic of Congo") {
+      button.textContent += " 🇨🇩" 
+    } else if (button.textContent === "Egypt") {
+      button.textContent += " 🇪🇬"
+    } else if (button.textContent === "Angola") {
+      button.textContent += " 🇦🇴"
+    } else if (button.textContent === "Burkina Faso") {
+      button.textContent += " 🇧🇫"
+    } else if (button.textContent === "Burundi") {
+      button.textContent += " 🇧🇮"
+    } else if (button.textContent === "Benin") {
+      button.textContent += " 🇧🇯"
+    } else if (button.textContent === "Central African Republic") {
+      button.textContent += " 🇨🇫" 
+    } else if (button.textContent === "Ivory Coast") {
+      button.textContent += " 🇨🇮"
+    } else if (button.textContent === "Cape Verde") {
+      button.textContent += " 🇨🇻"
+    } else if (button.textContent === "Djibouti") {
+      button.textContent += " 🇩🇯"
+    } else if (button.textContent === "Eritrea") {
+      button.textContent += " 🇪🇷"
+    } else if (button.textContent === "Ethiopia") {
+      button.textContent += " 🇪🇹" 
+    } else if (button.textContent === "Gabon") {
+      button.textContent += " 🇬🇦"
+    } else if (button.textContent === "Gambia") {
+      button.textContent += " 🇬🇲"
+    } else if (button.textContent === "Guinea") {
+      button.textContent += " 🇬🇳"
+    } else if (button.textContent === "Kenya") {
+      button.textContent += " 🇰🇪"
+    } else if (button.textContent === "Liberia") {
+      button.textContent += " 🇱🇷" 
+    } else if (button.textContent === "Libya") {
+      button.textContent += " 🇱🇾"
+    } else if (button.textContent === "Morocco") {
+      button.textContent += " 🇲🇦" 
+    } else if (button.textContent === "Madagascar") {
+      button.textContent += " 🇲🇬"
+    } else if (button.textContent === "Mauritania") {
+      button.textContent += " 🇲🇷"
+    } else if (button.textContent === "Mauritius") {
+      button.textContent += " 🇲🇺"
+    } else if (button.textContent === "Mozambique") {
+      button.textContent += " 🇲🇿"
+    } else if (button.textContent === "Seychelles") {
+      button.textContent += " 🇸🇨"
+    } else if (button.textContent === "Sudan") {
+      button.textContent += " 🇸🇩"
+    } else if (button.textContent === "Sierra Leone") {
+      button.textContent += " 🇸🇱"
+    } else if (button.textContent === "Senegal") {
+      button.textContent += " 🇸🇳"
+    } else if (button.textContent === "Somalia") {
+      button.textContent += " 🇸🇴"
+    } else if (button.textContent === "South Sudan") {
+      button.textContent += " 🇸🇸"
+    } else if (button.textContent === "Eswatini") {
+      button.textContent += " 🇸🇿"
+    } else if (button.textContent === "Chad") {
+      button.textContent += " 🇹🇩"
+    } else if (button.textContent === "Togo") {
+      button.textContent += " 🇹🇬"
+    } else if (button.textContent === "Tanzania") {
+      button.textContent += " 🇹🇿"
+    } else if (button.textContent === "Uganda") {
+      button.textContent += " 🇺🇬"
+    } else if (button.textContent === "Zimbabwe") {
+      button.textContent += " 🇿🇼"
+    } else if (button.textContent === "Argentina") {
+      button.textContent += " 🇦🇷"
+    } else if (button.textContent === "Barbados") {
+      button.textContent += " 🇧🇧"
+    } else if (button.textContent === "Bahamas") {
+      button.textContent += " 🇧🇸"
+    } else if (button.textContent === "Chile") {
+      button.textContent += " 🇨🇱"  
+    } else if (button.textContent === "Colombia") {
+      button.textContent += " 🇨🇴"
+    } else if (button.textContent === "Costa Rica") {
+      button.textContent += " 🇨🇷"
+    } else if (button.textContent === "Cuba") {
+      button.textContent += " 🇨🇺"
+    } else if (button.textContent === "Dominican Republic") {
+      button.textContent += " 🇩🇴"
+    } else if (button.textContent === "Ecuador") {
+      button.textContent += " 🇪🇨"
+    } else if (button.textContent === "Grenada") {
+      button.textContent += " 🇬🇩"
+    } else if (button.textContent === "Guatemala") {
+      button.textContent += " 🇬🇹"
+    } else if (button.textContent === "Guyana") {
+      button.textContent += " 🇬🇾"
+    } else if (button.textContent === "Honduras") {
+      button.textContent += " 🇭🇳"
+    } else if (button.textContent === "Haiti") {
+      button.textContent += " 🇭🇹"
+    } else if (button.textContent === "Jamaica") {
+      button.textContent += " 🇯🇲"
+    } else if (button.textContent === "Mexico") {
+      button.textContent += " 🇲🇽"
+    } else if (button.textContent === "Nicaragua") {
+      button.textContent += " 🇳🇮"
+    } else if (button.textContent === "Panama") {
+      button.textContent += " 🇵🇦"
+    } else if (button.textContent === "Peru") {
+      button.textContent += " 🇵🇪"
+    } else if (button.textContent === "Puerto Rico") {
+      button.textContent += " 🇵🇷"
+    } else if (button.textContent === "Suriname") {
+      button.textContent += " 🇸🇷"
+    } else if (button.textContent === "El Salvador") {
+      button.textContent += " 🇸🇻"
+    } else if (button.textContent === "Trinidad & Tobago") {
+      button.textContent += " 🇹🇹"
+    } else if (button.textContent === "United States") {
+      button.textContent += " 🇺🇸"
+    } else if (button.textContent === "Uruguay") {
+      button.textContent += " 🇺🇾"
+    } else if (button.textContent === "Venezuela") {
+      button.textContent += " 🇻🇪"
+    } else if (button.textContent === "United Arab Emirates") {
+      button.textContent += " 🇦🇪"
+    } else if (button.textContent === "Afghanistan") {
+      button.textContent += " 🇦🇫"
+    } else if (button.textContent === "Azerbaijan") {
+      button.textContent += " 🇦🇿"
+    } else if (button.textContent === "Bahrain") {
+      button.textContent += " 🇧🇭"
+    } else if (button.textContent === "Brunei") {
+      button.textContent += " 🇧🇳"
+    } else if (button.textContent === "Hong Kong") {
+      button.textContent += " 🇭🇰"
+    } else if (button.textContent === "Indonesia") {
+      button.textContent += " 🇮🇩"
+    } else if (button.textContent === "Israel") {
+      button.textContent += " 🇮🇱"
+    } else if (button.textContent === "Iraq") {
+      button.textContent += " 🇮🇶"
+    } else if (button.textContent === "Iran") {
+      button.textContent += " 🇮🇷"
+    } else if (button.textContent === "Jordan") {
+      button.textContent += " 🇯🇴"
+    } else if (button.textContent === "Kyrgyzstan") {
+      button.textContent += " 🇰🇬"
+    } else if (button.textContent === "Cambodia") {
+      button.textContent += " 🇰🇭"
+    } else if (button.textContent === "North Korea") {
+      button.textContent += " 🇰🇵"
+    } else if (button.textContent === "South Korea") {
+      button.textContent += " 🇰🇷"
+    } else if (button.textContent === "Kuwait") {
+      button.textContent += " 🇰🇼"
+    } else if (button.textContent === "Kazakhstan") {
+      button.textContent += " 🇰🇿"
+    } else if (button.textContent === "Laos") {
+      button.textContent += " 🇱🇦"
+    } else if (button.textContent === "Lebanon") {
+      button.textContent += " 🇱🇧"
+    } else if (button.textContent === "Sri Lanka") {
+      button.textContent += " 🇱🇰"
+    } else if (button.textContent === "Myanmar") {
+      button.textContent += " 🇲🇲"
+    } else if (button.textContent === "Mongolia") {
+      button.textContent += " 🇲🇳"
+    } else if (button.textContent === "Malaysia") {
+      button.textContent += " 🇲🇾"
+    } else if (button.textContent === "Nepal") {
+      button.textContent += " 🇳🇵"
+    } else if (button.textContent === "Oman") {
+      button.textContent += " 🇴🇲"
+    } else if (button.textContent === "Phillipines") {
+      button.textContent += " 🇵🇭"
+    } else if (button.textContent === "Qatar") {
+      button.textContent += " 🇶🇦"
+    } else if (button.textContent === "Russia") {
+      button.textContent += " 🇷🇺"
+    } else if (button.textContent === "Saudi Arabia") {
+      button.textContent += " 🇸🇦"
+    } else if (button.textContent === "Syria") {
+      button.textContent += " 🇸🇾"
+    } else if (button.textContent === "Thailand") {
+      button.textContent += " 🇹🇭"
+    } else if (button.textContent === "Tajikistan") {
+      button.textContent += " 🇹🇯"
+    } else if (button.textContent === "Turkmenistan") {
+      button.textContent += " 🇹🇲"
+    } else if (button.textContent === "Turkey") {
+      button.textContent += " 🇹🇷"
+    } else if (button.textContent === "Taiwan") {
+      button.textContent += " 🇹🇼"
+    } else if (button.textContent === "Uzbekistan") {
+      button.textContent += " 🇺🇿"
+    } else if (button.textContent === "Vietnam") {
+      button.textContent += " 🇻🇳"
+    } else if (button.textContent === "Yemen") {
+      button.textContent += " 🇾🇪"
+    } else if (button.textContent === "Andorra") {
+      button.textContent += " 🇦🇩"
+    } else if (button.textContent === "Albania") {
+      button.textContent += " 🇦🇱"
+    } else if (button.textContent === "Armenia") {
+      button.textContent += " 🇦🇲"
+    } else if (button.textContent === "Austria") {
+      button.textContent += " 🇦🇹"
+    } else if (button.textContent === "Bosnia & Herzegovina") {
+      button.textContent += " 🇧🇦"
+    } else if (button.textContent === "Belgium") {
+      button.textContent += " 🇧🇪"
+    } else if (button.textContent === "Bulgaria") {
+      button.textContent += " 🇧🇬"
+    } else if (button.textContent === "Belarus") {
+      button.textContent += " 🇧🇾"
+    } else if (button.textContent === "Switzerland") {
+      button.textContent += " 🇨🇭"
+    } else if (button.textContent === "Cyprus") {
+      button.textContent += " 🇨🇾"
+    } else if (button.textContent === "Czech Republic") {
+      button.textContent += " 🇨🇿"
+    } else if (button.textContent === "Denmark") {
+      button.textContent += " 🇩🇰"
+    } else if (button.textContent === "United Kingdom") {
+      button.textContent += " 🇬🇧"
+    } else if (button.textContent === "Georgia") {
+      button.textContent += " 🇬🇪"
+    } else if (button.textContent === "Croatia") {
+      button.textContent += " 🇭🇷"
+    } else if (button.textContent === "Hungary") {
+      button.textContent += " 🇭🇺"
+    } else if (button.textContent === "Iceland") {
+      button.textContent += " 🇮🇸"
+    } else if (button.textContent === "Liechtenstein") {
+      button.textContent += " 🇱🇮"
+    } else if (button.textContent === "Lithuania") {
+      button.textContent += " 🇱🇹"
+    } else if (button.textContent === "Luxembourg") {
+      button.textContent += " 🇱🇺"
+    } else if (button.textContent === "Latvia") {
+      button.textContent += " 🇱🇻"
+    } else if (button.textContent === "Monaco") {
+      button.textContent += " 🇲🇨"
+    } else if (button.textContent === "Moldova") {
+      button.textContent += " 🇲🇩"
+    } else if (button.textContent === "Montenegro") {
+      button.textContent += " 🇲🇪"
+    } else if (button.textContent === "North Macedonia") {
+      button.textContent += " 🇲🇰"
+    } else if (button.textContent === "Malta") {
+      button.textContent += " 🇲🇹"
+    } else if (button.textContent === "Netherlands") {
+      button.textContent += " 🇳🇱"
+    } else if (button.textContent === "Norway") {
+      button.textContent += " 🇳🇴"
+    } else if (button.textContent === "Poland") {
+      button.textContent += " 🇵🇱"
+    } else if (button.textContent === "Portugal") {
+      button.textContent += " 🇵🇹"
+    } else if (button.textContent === "Romania") {
+      button.textContent += " 🇷🇴"
+    } else if (button.textContent === "Serbia") {
+      button.textContent += " 🇷🇸"
+    } else if (button.textContent === "Slovenia") {
+      button.textContent += " 🇸🇮"
+    } else if (button.textContent === "Slovakia") {
+      button.textContent += " 🇸🇰"
+    } else if (button.textContent === "San Marino") {
+      button.textContent += " 🇸🇲"
+    } else if (button.textContent === "Ukraine") {
+      button.textContent += " 🇺🇦"
+    } else if (button.textContent === "England") {
+      button.textContent += " 🏴󠁧󠁢󠁥󠁮󠁧󠁿"
+    } else if (button.textContent === "Scotland") {
+      button.textContent += " 🏴󠁧󠁢󠁳󠁣󠁴󠁿"
+    } else if (button.textContent === "Wales") {
+      button.textContent += " 🏴󠁧󠁢󠁷󠁬󠁳󠁿"
+    } else if (button.textContent === "Australia") {
+      button.textContent += " 🇦🇺"
+    } else if (button.textContent === "New Zealand") {
+      button.textContent += " 🇳🇿"
+    } else if (button.textContent === "Tongo") {
+      button.textContent += " 🇹🇴"
+    } else if (button.textContent === "Kiribati") {
+      button.textContent += " 🇰🇮"
+  } else if (button.textContent === "Sao Tome and Principe") {
+    button.textContent += "🇸🇹"
+  }
+})
+
   document.querySelector(".next-btn").style.display = "block";
 }
 
