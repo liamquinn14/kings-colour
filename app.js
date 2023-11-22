@@ -1,4 +1,109 @@
 let newColor;
+let questionCombination = []
+let answerCombination
+let difficulty = ""
+
+const questions = {
+    red: [
+        [0, 0, 0, 1],[0, 0, 1, 0,],[1, 0, 0, 0],[0, 1, 0, 0]
+    ],
+    blue: [
+        [0, 0, 0, 1],[0, 0, 1, 0,],[1, 0, 0, 0],[0, 1, 0, 0]
+    ],
+    green: [
+        [0, 0, 0, 1],[0, 0, 1, 0,],[1, 0, 0, 0],[0, 1, 0, 0]
+    ],
+    yellow: [
+        [0, 0, 0, 1],[0, 0, 1, 0,],[1, 0, 0, 0],[0, 1, 0, 0]
+    ],
+    black: [
+      [0, 0, 0, 1],[0, 0, 1, 0,],[1, 0, 0, 0],[0, 1, 0, 0]
+    ],
+    white: [
+        [0, 0, 0, 1],[0, 0, 1, 0,],[1, 0, 0, 0],[0, 1, 0, 0]
+    ],
+};
+
+let easyCountries = [
+  "United Kingdom", "Spain", "France", "Germany", "Switzerland", "Italy", "Canada", "Japan", "China", "England", "Belgium", "Russia", "United States", "Australia", "New Zealand", "North Korea", "South Korea", "Turkey", "Denmark", "Austria", "Czech Republic", "Senegal", "Morocco", "Cameroon", "Wales", "Egypt", "Mexico", "Ireland", "Scotland", "Sweden", "Ukraine", "India", "Nigeria", "Brazil", "Argentina", "Norway", "Iceland", "Hungary", "Netherlands", "Poland", "Portugal", "Romania", "Serbia"]
+
+let normalCountries = ["United Kingdom", "Spain", "France", "Germany", "Switzerland", "Italy", "Canada", "Japan", "China", "England", "Belgium", "Russia", "United States", "Ghana", "Bangladesh", "Cameroon", "South Africa", "Algeria", "Tunisia", "Egypt", "Wales", "Morocco", "Kenya", "Australia", "New Zealand", "Ecuador", "Mexico", "Peru", "Cuba", "Puerto Rico", "Turkey", "Denmark", "North Korea", "South Korea", "Croatia", "Czech Republic", "Austria", "Thailand", "Malaysia", "Iran", "Iraq", "Colombia","Ireland", "Scotland", "Sweden", "Ukraine", "India", "Nigeria", "Brazil", "Jamaica", "Uruguay", "Saudi Arabia", "Kazakhstan", "Cyprus", "Israel", "Argentina", "Finland", "Estonia", "Ivory Coast", "Bosnia & Herzegovina", "United Arab Emirates", "Ethiopia", "Norway", "Senegal", "Iceland", "Portugal", "Hungary", "Netherlands", "Poland",  "Romania", "Serbia", "Lithuania", "Luxembourg", "Latvia", "Monaco", "Moldova", "Montenegro", "Slovakia", "Slovenia"]
+
+let hardCountries = ["Ghana", "Bangladesh", "Cameroon", "South Africa", "Algeria", "Tunisia", "Morocco", "Kenya", "Ecuador", "Mexico", "Peru", "Cuba", "Turkey", "Denmark", "North Korea", "South Korea", "Croatia", "Czech Republic", "Austria", "Thailand", "Malaysia", "Iran", "Iraq", "Senegal", "Uganda", "Zimbabwe","Colombia", "Puerto Rico", "Namibia", "United Arab Emirates", "Philippines", "Haiti", "Dominican Republic", "Albania", "Yemen", "Jamaica", "Uruguay", "Saudi Arabia", "Kazakhstan", "Cyprus", "Finland", "Estonia", "Ivory Coast", "Somalia", "Rwanda", "Botswana", "Niger", "Gabon", "Sierra Leone", "Somalia", "Tanzania", "Guatemala", "Bosnia & Herzegovina", "Ethiopia", "Hungary", "Lithuania", "Luxembourg", "Latvia", "Monaco", "Moldova", "Montenegro", "Malta", "Slovakia", "Slovenia"]
+
+let insaneCountries = ["Cameroon", "Algeria", "Kenya", "Ecuador", "Peru", "Cuba", "Puerto Rico", "Malaysia", "Democratic Republic of Congo", "Hong Kong", "Singapore", "Mali", "Malawi", "Namibia", "Zambia", "Angola", "Burkina Faso", "Burundi", "Benin", "Central African Republic", "Cape Verde", "Eritrea", "Ethiopia", "Gambia", "Guinea", "Liberia", "Libya", "Madagascar", "Mauritania", "Mauritius", "Seychelles", "Sudan", "South Sudan", "Eswatini", "Chad", "Togo", "Uganda", "Zimbabwe", "Chile", "Costa Rica", "Dominican Republic", "Ecuador", "Grenada", "Guyana", "Haiti", "Panama", "Peru", "Suriname", "Trinidad & Tobago", "Venezuela", "United Arab Emirates", "Afghanistan", "Azerbaijan", "Bahrain", "Brunei", "Hong Kong", "Indonesia", "Jordan", "Kyrgyzstan", "Cambodia", "Kuwait", "Laos", "Lebanon", "Sri Lanka", "Myanmar", "Mongolia", "Malaysia", "Nepal", "Oman", "Philippines", "Syria", "Thailand", "Tajikistan", "Turkmenistan", "Taiwan", "Vietnam", "Yemen", "Andorra", "Albania", "Armenia", "Georgia","Djibouti", "Somalia", "Lesotho", "Botswana", "Niger", "Gabon", "Sierra Leone", "Tanzania", "Barbados", "Bahamas", "Guatemala", "Honduras", "Nicaragua", "Malta", "El Salvador", "Kazakhstan", "Uzbekistan", "San Marino", "Tonga", "Kiribati", "Sao Tome & Principe"]
+
+let allCountries = ["China", "Democratic Republic of Congo", "United Kingdom", "Spain", "France", "Germany", "Switzerland", "Hong Kong", "Italy", "Canada", "Singapore", "Mali", "Malawi", "Norway", "Japan", "Ghana", "Bangladesh", "Cameroon", "South Africa", "Namibia", "Zambia", "Algeria", "Tunisia", "Egypt", "Angola", "Burkina Faso", "Burundi", "Benin", "Central African Republic", "Cape Verde", "Eritrea", "Ethiopia", "Gambia", "Guinea", "Kenya", "Liberia", "Libya", "Morocco", "Madagascar", "Mauritania", "Mauritius", "Seychelles", "Sudan", "South Sudan", "Senegal", "Eswatini", "Chad", "Togo", "Uganda", "Zimbabwe", "Chile", "Colombia", "Costa Rica", "Dominican Republic", "Ecuador", "Grenada", "Guyana", "Haiti", "Mexico", "Panama", "Peru", "Puerto Rico", "Suriname", "Trinidad & Tobago", "United States", "Venezuela", "United Arab Emirates", "Afghanistan", "Azerbaijan", "Bahrain", "Brunei", "Hong Kong", "Indonesia", "Iraq", "Iran", "Jordan", "Kyrgyzstan", "Cambodia", "North Korea", "South Korea", "Kuwait", "Laos", "Lebanon", "Sri Lanka", "Myanmar", "Mongolia", "Malaysia", "Nepal", "Oman", "Philippines", "Russia", "Syria", "Thailand", "Tajikistan", "Turkmenistan", "Turkey", "Taiwan", "Vietnam", "Yemen", "Andorra", "Albania", "Armenia", "Austria", "Belgium", "Bulgaria", "Belarus", "Czech Republic", "Denmark", "Georgia", "Croatia", "Djibouti", "Ireland", "Scotland", "Israel", "Somalia", "Brazil", "Rwanda", "Finland", "Estonia", "Sweden", "Lesotho", "Botswana", "Niger", "Nigeria", "India", "Pakistan", "Ivory Coast", "Gabon", "Sierra Leone", "Tanzania", "Argentina", "Barbados", "Bahamas", "Guatemala", "Honduras", "Uruguay", "Jamaica", "Nicaragua", "El Salvador", "Kazakhstan", "Saudi Arabia", "Uzbekistan", "Bosnia & Herzegovina", "Cyprus", "Iceland", "Australia", "New Zealand", "Hungary", "Liechtenstein", "Lithuania", "Luxembourg", "Latvia", "Monaco", "Moldova", "Montenegro", "Malta", "Netherlands", "Poland", "Portugal", "Romania", "Serbia", "Slovakia", "Slovenia", "San Marino", "Tonga", "Kiribati", "Sao Tome & Principe"]
+
+const countries = {
+  easy: {
+    redCountries: ["United Kingdom", "Spain", "France", "Germany", "Switzerland", "Italy", "Canada", "Japan", "China", "England", "Belgium", "Russia", "United States", "Australia", "New Zealand", "North Korea", "South Korea", "Turkey", "Denmark", "Austria", "Czech Republic", "Senegal", "Morocco", "Cameroon", "Wales", "Egypt", "Mexico", "Norway", "Iceland", "Portugal", "Hungary", "Netherlands", "Poland", "Romania", "Serbia"],
+    nonRedCountries: ["Ireland", "Scotland", "Sweden", "Ukraine", "India", "Nigeria", "Brazil", "Argentina"],
+    blueCountries: ["United Kingdom", "France", "Russia", "United States", "Australia", "New Zealand", "North Korea", "South Korea", "Czech Republic", "Scotland", "Sweden", "Ukraine", "Brazil", "Argentina", "Norway", "Iceland", "Netherlands", "Romania", "Serbia", "India"],
+    nonBlueCountries: ["Spain", "Germany", "Switzerland", "Italy", "Canada", "Japan", "China", "England", "Belgium", "Turkey", "Denmark", "Austria", "Senegal", "Morocco", "Cameroon", "Wales", "Egypt", "Mexico", "Ireland", "Nigeria", "Hungary", "Poland", "Portugal"],
+    greenCountries: ['Italy','Senegal','Cameroon','Mexico','Ireland','India','Nigeria','Brazil','Hungary','Portugal'],
+    nonGreenCountries: ['United Kingdom','Spain','France','Germany','Switzerland','Canada','Japan','China','Belgium','Russia','United States','Australia','New Zealand','North Korea','South Korea','Turkey','Denmark','Austria','Czech Republic','Morocco','Egypt','Scotland','Sweden','Argentina','Norway','Iceland','Netherlands','Poland','Romania','Serbia'],
+    yellowCountries: [],
+    nonYellowCountries: [],
+    whiteCountries: [],
+    nonWhiteCountries: [],
+    blackCountries: ['Germany', 'Belgium', 'South Korea', 'Egypt', "Jamaica", "Albania", "Ghana", "Kenya", "Iraq", "Tanzania", "South Africa"],
+    nonBlackCountries: ['United Kingdom','Spain','France','Switzerland','Italy','Canada','Japan','China','Russia','United States','Australia','New Zealand','North Korea','Turkey','Denmark','Austria','Czech Republic','Senegal','Morocco','Cameroon','Mexico','Ireland','Scotland','Sweden','India','Nigeria','Brazil','Argentina','Norway','Iceland','Hungary','Netherlands','Poland','Portugal','Romania','Serbia']
+  },
+  normal: {
+    redCountries: ["United Kingdom", "Spain", "France", "Germany", "Switzerland", "Italy", "Canada", "Japan", "China", "England", "Belgium", "Russia", "United States", "Ghana", "Bangladesh", "Cameroon", "South Africa", "Algeria", "Tunisia", "Egypt", "Wales", "Morocco", "Kenya", "Australia", "New Zealand", "Ecuador", "Mexico", "Peru", "Cuba", "Puerto Rico", "Turkey", "Denmark", "North Korea", "South Korea", "Croatia", "Czech Republic", "Austria", "Thailand", "Malaysia", "Iran", "Iraq", "Colombia", "United Arab Emirates", "Ethiopia", "Norway", "Senegal", "Portugal", "Hungary", "Netherlands", "Poland", "Romania", "Serbia"],
+    nonRedCountries: ["Ireland", "Scotland", "Sweden", "Ukraine", "India", "Nigeria", "Brazil", "Jamaica", "Uruguay", "Saudi Arabia", "Kazakhstan", "Cyprus", "Israel", "Argentina", "Finland", "Estonia", "Ivory Coast", "Bosnia & Herzegovina"],
+    blueCountries: ["United Kingdom", "France", "Russia", "United States", "South Africa", "Australia", "New Zealand", "Ecuador", "Cuba", "Puerto Rico", "North Korea", "South Korea", "Croatia", "Czech Republic", "Thailand", "Malaysia", "Colombia", "Scotland", "Sweden", "Ukraine", "Brazil", "Uruguay", "Kazakhstan", "Israel", "Argentina", "Finland", "Estonia", "Bosnia & Herzegovina", "Ethiopia", "Norway", "Iceland", "Netherlands", "Romania", "Serbia", "Luxembourg", "Moldova", "Slovakia", "Slovenia", "India"],
+    nonBlueCountries: ["Spain", "Germany", "Switzerland", "Italy", "Canada", "Japan", "China", "England", "Belgium", "Ghana", "Bangladesh", "Cameroon", "Algeria", "Tunisia", "Egypt", "Wales", "Morocco", "Kenya", "Mexico", "Peru", "Turkey", "Denmark", "Austria", "Iran", "Iraq", "Ireland", "Nigeria", "Jamaica", "Saudi Arabia", "Cyprus", "Ivory Coast", "United Arab Emirates", "Senegal", "Portugal", "Hungary", "Poland",  "Romania", "Lithuania", "Latvia", "Monaco", "Montenegro"],
+    greenCountries: [ 'Italy','Ghana','Bangladesh','Cameroon','South Africa','Algeria','Kenya','Ecuador','Mexico','Iran','Iraq','Ireland','India','Nigeria','Brazil','Jamaica','Saudi Arabia','Ivory Coast','United Arab Emirates','Ethiopia','Senegal','Portugal','Hungary','Lithuania' ],
+    nonGreenCountries: ['United Kingdom','Spain','France','Germany','Switzerland','Canada','Japan','China','Belgium','Russia','United States','Tunisia','Egypt','Morocco','Australia','New Zealand','Peru','Puerto Rico','Turkey','Denmark','North Korea','South Korea','Croatia','Czech Republic','Austria','Thailand','Malaysia','Colombia','Scotland','Sweden','Uruguay','Kazakhstan','Cyprus','Israel','Argentina','Finland','Estonia','Bosnia & Herzegovina','Norway','Iceland','Netherlands','Poland','Romania','Serbia','Luxembourg','Latvia','Monaco','Moldova','Montenegro','Slovakia','Slovenia'],
+    yellowCountries: [],
+    nonYellowCountries: [],
+    whiteCountries: [],
+    nonWhiteCountries: [],
+    blackCountries: ['Germany','Belgium','Ghana','South Africa','Egypt','Kenya','South Korea','Iraq','Jamaica','Estonia','United Arab Emirates', 'Albania', 'Tanzania', 'Barbados', 'Angola', 'Uganda'],
+    nonBlackCountries: [ 'United Kingdom','Spain','France','Switzerland','Italy','Canada','Japan','China','Russia','United States','Bangladesh','Cameroon','Algeria','Tunisia','Morocco','Australia','New Zealand','Ecuador','Mexico','Peru','Puerto Rico','Turkey','Denmark','North Korea','Croatia','Czech Republic','Austria','Thailand','Malaysia','Iran','Colombia','Ireland','Scotland','Sweden','India','Nigeria','Brazil','Uruguay','Saudi Arabia','Kazakhstan','Cyprus','Israel','Argentina','Finland','Ivory Coast','Bosnia & Herzegovina','Ethiopia','Norway','Senegal','Iceland','Portugal','Hungary','Netherlands','Poland','Romania','Serbia','Lithuania','Luxembourg','Latvia','Monaco','Moldova','Montenegro','Slovakia','Slovenia'],
+  },
+  hard: {
+    redCountries: ["Ghana", "Bangladesh", "Cameroon", "South Africa", "Algeria", "Tunisia", "Morocco", "Kenya", "Australia", "New Zealand", "Ecuador", "Mexico", "Peru", "Cuba", "Puerto Rico", "Turkey", "Denmark", "North Korea", "South Korea", "Croatia", "Czech Republic", "Austria", "Thailand", "Malaysia", "Iran", "Iraq", "Senegal", "Uganda", "Zimbabwe","Colombia", "Puerto Rico", "Namibia", "United Arab Emirates", "Philippines", "Haiti", "Dominican Republic", "Albania", "Yemen", "Latvia"],
+    nonRedCountries: ["Jamaica", "Uruguay", "Saudi Arabia", "Kazakhstan", "Cyprus", "Finland", "Estonia", "Ivory Coast", "Somalia", "Rwanda", "Botswana", "Niger", "Gabon", "Sierra Leone", "Somalia", "Tanzania", "Guatemala", "Bosnia & Herzegovina"],
+    blueCountries: ["South Africa", "Ecuador", "Cuba", "Puerto Rico", "North Korea", "South Korea", "Croatia", "Czech Republic", "Thailand", "Malaysia", "Colombia", "Namibia", "Philippines", "Haiti", "Dominican Republic", "Uruguay", "Kazakhstan", "Finland", "Estonia", "Somalia", "Rwanda", "Botswana", "Gabon", "Sierra Leone", "Tanzania", "Guatemala", "Bosnia & Herzegovina", "Ethiopia", "Luxembourg",  "Moldova", "Slovakia", "Slovenia"],
+    nonBlueCountries: ["Ghana", "Bangladesh", "Cameroon", "Mexico", "Peru", "Turkey", "Denmark", "Austria", "Iran", "Iraq", "Senegal", "Uganda", "Zimbabwe", "United Arab Emirates", "Albania", "Yemen", "Jamaica", "Saudi Arabia", "Cyprus", "Ivory Coast", "Niger", "Hungary", "Lithuania", "Latvia", "Monaco", "Montenegro", "Malta"],
+    greenCountries: ['Ghana','Bangladesh','Cameroon','South Africa','Algeria','Kenya','Ecuador','Mexico','Iran','Iraq','Senegal','Zimbabwe','Namibia','United Arab Emirates','Haiti','Jamaica','Saudi Arabia','Ivory Coast','Rwanda','Niger','Gabon','Sierra Leone','Tanzania','Ethiopia','Hungary','Lithuania'],
+    nonGreenCountries: ['Tunisia','Morocco','Peru','Turkey','Denmark','North Korea','South Korea','Croatia','Czech Republic','Austria','Thailand','Malaysia','Uganda','Colombia','Puerto Rico','Philippines','Dominican Republic','Albania','Yemen','Uruguay','Kazakhstan','Cyprus','Finland','Estonia','Somalia','Botswana','Somalia','Guatemala','Bosnia & Herzegovina','Luxembourg','Latvia','Monaco','Moldova','Montenegro','Malta','Slovakia','Slovenia'],
+    yellowCountries: [],
+    nonYellowCountries: [],
+    whiteCountries: [],
+    nonWhiteCountries: [],
+    blackCountries: ["Germany", "Malawi", "Ghana", "South Africa", "Zambia", "Egypt", "Angola", "Kenya", "Libya", "Sudan", "South Sudan", "Eswatini", "Uganda", "Zimbabwe", "Guyana", "Trinidad & Tobago", "United Arab Emirates", "Afghanistan", "Brunei", "Iraq", "Jordan", "South Korea", "Kuwait", "Syria", "Yemen", "Albania", "Belgium", "Estonia", "Lesotho", "Botswana", "Tanzania", "Barbados", "Bahamas", "Jamaica", "Sao Tome & Principe"],
+    nonBlackCountries: [ 'Bangladesh','Cameroon','Algeria','Tunisia','Morocco','Ecuador','Mexico','Peru','Turkey','Denmark','North Korea','Croatia','Czech Republic','Austria','Thailand','Malaysia','Iran','Senegal','Colombia','Puerto Rico','Namibia','Philippines','Haiti','Dominican Republic','Uruguay','Saudi Arabia','Kazakhstan','Cyprus','Finland','Ivory Coast','Somalia','Rwanda','Niger','Gabon','Sierra Leone','Somalia','Guatemala','Bosnia & Herzegovina','Ethiopia','Hungary','Lithuania','Luxembourg','Latvia','Monaco','Moldova','Montenegro','Malta','Slovakia','Slovenia' ],
+  },
+  insane: {
+    redCountries: ["Cameroon", "Algeria", "Kenya", "Ecuador", "Peru", "Cuba", "Puerto Rico", "Malaysia", "Democratic Republic of Congo", "Hong Kong", "Singapore", "Mali", "Malawi", "Namibia", "Zambia", "Angola", "Burkina Faso", "Burundi", "Benin", "Central African Republic", "Cape Verde", "Eritrea", "Ethiopia", "Gambia", "Guinea", "Liberia", "Libya", "Madagascar", "Mauritania", "Mauritius", "Seychelles", "Sudan", "South Sudan", "Eswatini", "Chad", "Togo", "Uganda", "Zimbabwe", "Chile", "Costa Rica", "Dominican Republic", "Ecuador", "Grenada", "Guyana", "Haiti", "Panama", "Peru", "Suriname", "Trinidad & Tobago", "Venezuela", "United Arab Emirates", "Afghanistan", "Azerbaijan", "Bahrain", "Brunei", "Hong Kong", "Indonesia", "Jordan", "Kyrgyzstan", "Cambodia", "Kuwait", "Laos", "Lebanon", "Sri Lanka", "Myanmar", "Mongolia", "Malaysia", "Nepal", "Oman", "Philippines", "Syria", "Thailand", "Tajikistan", "Turkmenistan", "Taiwan", "Vietnam", "Yemen", "Andorra", "Albania", "Armenia", "Georgia", "Malta", "San Marino", "Tonga", "Kiribati", "Sao Tome & Principe"],
+    nonRedCountries:["Djibouti", "Somalia", "Lesotho", "Botswana", "Niger", "Gabon", "Sierra Leone", "Somalia", "Tanzania", "Barbados", "Bahamas", "Guatemala", "Honduras", "Nicaragua", "El Salvador", "Kazakhstan", "Uzbekistan", "San Marino"],
+    blueCountries: ["Ecuador", "Cuba", "Puerto Rico", "Malaysia", "Democratic Republic of Congo", "Namibia", "Central African Republic", "Cape Verde", "Eritrea", "Ethiopia", "Gambia", "Liberia", "Mauritania", "Mauritius", "Seychelles", "South Sudan", "Eswatini", "Chad", "Chile", "Costa Rica", "Dominican Republic", "Ecuador", "Haiti", "Panama", "Venezuela", "Azerbaijan", "Cambodia", "Laos",   "Mongolia", "Malaysia", "Nepal", "Philippines", "Thailand", "Taiwan", "Andorra", "Armenia", "Djibouti", "Somalia", "Lesotho", "Botswana", "Gabon", "Sierra Leone", "Tanzania", "Barbados", "Bahamas", "Guatemala", "Honduras", "Nicaragua", "El Salvador", "Kazakhstan", "Uzbekistan", "San Marino", "Kiribati"],
+    nonBlueCountries: [ 'Cameroon', 'Algeria', 'Kenya', 'Peru', 'Hong Kong', 'Singapore', 'Mali', 'Malawi', 'Zambia', 'Angola', 'Burkina Faso', 'Burundi', 'Benin', 'Guinea', 'Libya', 'Madagascar', 'Sudan', 'Togo', 'Uganda', 'Zimbabwe', 'Grenada', 'Guyana', 'Peru', 'Suriname', 'Trinidad & Tobago', 'United Arab Emirates', 'Afghanistan', 'Bahrain', 'Brunei', 'Hong Kong', 'Indonesia', 'Jordan', 'Kyrgyzstan', 'Kuwait', 'Lebanon', 'Sri Lanka', 'Myanmar', 'Oman', 'Syria', 'Turkmenistan', 'Vietnam', 'Yemen', 'Albania', 'Georgia', 'Niger', 'Malta', 'Tonga', 'Sao Tome & Principe' ],
+    greenCountries: ['Cameroon','Algeria','Kenya','Ecuador','Mali','Malawi','Namibia','Zambia','Burkina Faso','Burundi','Benin','Central African Republic','Eritrea','Ethiopia','Gambia','Guinea','Libya','Madagascar','Mauritania','Mauritius','Seychelles','Sudan','South Sudan','Eswatini','Togo','Zimbabwe','Ecuador','Grenada','Guyana','Haiti','Suriname','Venezuela','United Arab Emirates','Afghanistan','Azerbaijan','Jordan','Kyrgyzstan','Cambodia','Kuwait','Lebanon','Sri Lanka','Myanmar','Oman','Syria','Tajikistan','Turkmenistan','Djibouti','Lesotho','Niger','Gabon','Sierra Leone','Tanzania','Uzbekistan','San Marino','Sao Tome & Principe'],
+    nonGreenCountries: ['Peru','Puerto Rico','Malaysia','Democratic Republic of Congo','Hong Kong','Singapore','Angola','Cape Verde','Liberia','Chad','Uganda','Chile','Costa Rica','Dominican Republic','Panama','Peru','Trinidad & Tobago','Bahrain','Brunei','Hong Kong','Indonesia','Laos','Mongolia','Malaysia','Nepal','Philippines','Thailand','Taiwan','Vietnam','Yemen','Andorra','Albania','Armenia','Georgia','Somalia','Botswana','Barbados','Bahamas','Guatemala','Honduras','Nicaragua','Malta','El Salvador','Kazakhstan','Tonga','Kiribati'],
+    yellowCountries: [],
+    nonYellowCountries: [],
+    whiteCountries: [],
+    nonWhiteCountries: [],
+    blackCountries: ["Malawi", "Zambia", "Egypt", "Angola", "Libya", "Sudan", "South Sudan", "Eswatini", "Uganda", "Zimbabwe", "Guyana", "Trinidad & Tobago", "United Arab Emirates", "Afghanistan", "Brunei", "Iraq", "Jordan",  "Kuwait", "Syria", "Yemen", "Albania", "Estonia", "Lesotho", "Botswana", "Tanzania", "Barbados", "Bahamas", "Jamaica", "Sao Tome & Principe"],
+    nonBlackCountries: [ 'Cameroon','Algeria','Ecuador','Peru','Puerto Rico','Malaysia','Democratic Republic of Congo','Hong Kong','Singapore','Mali','Namibia','Burkina Faso','Burundi','Benin','Central African Republic','Cape Verde','Eritrea','Ethiopia','Gambia','Guinea','Liberia','Madagascar','Mauritania','Mauritius','Seychelles','Chad','Togo','Chile','Costa Rica','Dominican Republic','Ecuador','Grenada','Haiti','Panama','Peru','Suriname','Venezuela','Azerbaijan','Bahrain','Hong Kong','Indonesia','Kyrgyzstan','Cambodia','Laos','Lebanon','Sri Lanka','Myanmar','Mongolia','Malaysia','Nepal','Oman','Philippines','Thailand','Tajikistan','Turkmenistan','Taiwan','Vietnam','Andorra','Armenia','Georgia','Djibouti','Somalia','Niger','Gabon','Sierra Leone','Guatemala','Honduras','Nicaragua','Malta','El Salvador','Kazakhstan','Uzbekistan','San Marino','Tonga','Kiribati' ],
+  },
+  allCountries: {
+    redCountries: ["China", "Democratic Republic of Congo", "United Kingdom", "Spain", "France", "Germany", "Switzerland", "Hong Kong", "Italy", "Canada", "Singapore", "Mali", "Malawi", "Norway", "Japan", "Ghana", "Bangladesh", "Cameroon", "South Africa", "Namibia", "Zambia", "Algeria", "Tunisia", "Egypt", "Angola", "Burkina Faso", "Burundi", "Benin", "Central African Republic", "Cape Verde", "Eritrea", "Ethiopia", "Gambia", "Guinea", "Kenya", "Liberia", "Libya", "Morocco", "Madagascar", "Mauritania", "Mauritius", "Seychelles", "Sudan", "South Sudan", "Senegal", "Eswatini", "Chad", "Togo", "Uganda", "Zimbabwe", "Chile", "Colombia", "Costa Rica", "Dominican Republic", "Ecuador", "Grenada", "Guyana", "Haiti", "Mexico", "Panama", "Peru", "Puerto Rico", "Suriname", "Trinidad & Tobago", "United States", "Venezuela", "United Arab Emirates", "Afghanistan", "Azerbaijan", "Bahrain", "Brunei", "Hong Kong", "Indonesia", "Iraq", "Iran", "Jordan", "Kyrgyzstan", "Cambodia", "North Korea", "South Korea", "Kuwait", "Laos", "Lebanon", "Sri Lanka", "Myanmar", "Mongolia", "Malaysia", "Nepal", "Oman", "Philippines", "Russia", "Syria", "Thailand", "Tajikistan", "Turkmenistan", "Turkey", "Taiwan", "Vietnam", "Yemen", "Andorra", "Albania", "Armenia", "Austria", "Belgium", "Bulgaria", "Belarus", "Czech Republic", "Denmark", "Georgia", "Latvia", "Croatia"],
+    nonRedCountries: ["Djibouti", "Ireland", "Scotland", "Israel", "Somalia", "Brazil", "Rwanda", "Finland", "Estonia", "Sweden", "Lesotho", "Botswana", "Niger", "Nigeria", "India", "Pakistan", "Ivory Coast", "Gabon", "Sierra Leone", "Somalia", "Tanzania", "Argentina", "Barbados", "Bahamas", "Guatemala", "Honduras", "Uruguay", "Jamaica", "Nicaragua", "El Salvador", "Kazakhstan", "Saudi Arabia", "Uzbekistan", "Bosnia & Herzegovina", "Cyprus"],
+    blueCountries: ["Democratic Republic of Congo", "United Kingdom", "France", "Norway", "South Africa", "Namibia", "Central African Republic", "Cape Verde", "Eritrea", "Ethiopia", "Gambia", "Liberia", "Mauritania", "Mauritius", "Seychelles", "South Sudan", "Eswatini", "Chad", "Chile", "Colombia", "Costa Rica", "Dominican Republic", "Ecuador", "Haiti", "Panama", "Puerto Rico", "Suriname", "United States", "Venezuela", "Azerbaijan", "Cambodia", "North Korea", "South Korea", "Laos", "Mongolia", "Malaysia", "Nepal", "Philippines", "Russia", "Thailand", "Turkmenistan", "Taiwan", "Andorra", "Armenia", "Czech Republic", "Croatia", "Djibouti", "Scotland", "Israel", "Somalia", "Brazil", "Rwanda", "Finland", "Estonia", "Sweden", "Lesotho", "Botswana", "Gabon", "Sierra Leone", "Somalia", "Tanzania", "Argentina", "Barbados", "Bahamas", "Guatemala", "Honduras", "Uruguay", "Nicaragua", "El Salvador", "Kazakhstan", "Uzbekistan", "Bosnia & Herzegovina", "Iceland", "Australia", "New Zealand", "Liechtenstein", "Luxembourg", "Moldova", "Netherlands", "Romania", "Serbia", "Slovakia", "Slovenia", "San Marino", "Kiribati", "India"],
+    nonBlueCountries: ['China','Spain','Germany','Switzerland','Hong Kong','Italy','Canada','Singapore','Mali','Malawi','Japan','Ghana','Bangladesh','Cameroon','Zambia','Algeria','Tunisia','Egypt','Angola','Burkina Faso','Burundi','Benin','Guinea','Kenya','Libya','Morocco','Madagascar','Sudan','Senegal','Togo','Uganda','Zimbabwe','Grenada','Guyana','Mexico','Peru','Trinidad & Tobago','United Arab Emirates','Afghanistan','Bahrain','Brunei','Hong Kong','Indonesia','Iraq','Iran','Jordan','Kyrgyzstan','Kuwait','Lebanon','Sri Lanka','Myanmar','Oman','Syria','Tajikistan','Turkey','Vietnam','Yemen','Albania','Austria','Belgium','Bulgaria','Belarus','Denmark','Georgia','Ireland','Niger','Nigeria','India','Pakistan','Ivory Coast','Jamaica','Saudi Arabia','Cyprus','Hungary','Lithuania','Latvia','Monaco','Montenegro','Malta','Poland','Portugal','Tonga','Sao Tome & Principe'],
+    greenCountries: ["Italy", "Mali", "Malawi", "Ghana", "Bangladesh", "Cameroon", "South Africa", "Namibia", "Zambia", "Algeria", "Burkina Faso", "Burundi", "Benin", "Central African Republic", "Eritrea", "Ethiopia", "Gambia", "Guinea", "Kenya", "Libya", "Madagascar", "Mauritania", "Mauritius", "Seychelles", "Sudan", "South Sudan", "Senegal", "Eswatini", "Togo", "Zimbabwe",  "Ecuador", "Grenada", "Guyana", "Haiti", "Mexico", ,"Suriname", "Venezuela", "United Arab Emirates", "Afghanistan", "Azerbaijan", "Iraq", "Iran", "Jordan", "Kyrgyzstan", "Cambodia", "Kuwait", "Lebanon", "Sri Lanka", "Myanmar", "Oman", "Syria", "Tajikistan", "Turkmenistan", "Bulgaria", "Belarus", "Djibouti", "Ireland", "Brazil", "Rwanda", "Lesotho", "Niger", "Nigeria", "India", "Pakistan", "Ivory Coast", "Gabon", "Sierra Leone", "Tanzania", "Jamaica", "Saudi Arabia", "Uzbekistan", "Hungary", "Lithuania", "Portugal", "San Marino", "Sao Tome & Principe"],
+    nonGreenCountries: [ 'China','Democratic Republic of Congo','United Kingdom','Spain','France','Germany','Switzerland','Hong Kong','Canada','Singapore','Norway','Japan','Tunisia','Egypt','Angola','Cape Verde','Liberia','Morocco','Chad','Uganda','Chile','Colombia','Costa Rica','Dominican Republic','Panama','Peru','Puerto Rico','Trinidad & Tobago','United States','Bahrain','Brunei','Hong Kong','Indonesia','North Korea','South Korea','Laos','Mongolia','Malaysia','Nepal','Philippines','Russia','Thailand','Turkey','Taiwan','Vietnam','Yemen','Andorra','Albania','Armenia','Austria','Belgium','Czech Republic','Denmark','Georgia','Croatia','Scotland','Israel','Somalia','Finland','Estonia','Sweden','Botswana','Somalia','Argentina','Barbados','Bahamas','Guatemala','Honduras','Uruguay','Nicaragua','El Salvador','Kazakhstan','Bosnia & Herzegovina','Cyprus','Iceland','Australia','New Zealand','Liechtenstein','Luxembourg','Latvia','Monaco','Moldova','Montenegro','Malta','Netherlands','Poland','Romania','Serbia','Slovakia','Slovenia','Tonga','Kiribati'],
+    blackCountries: ["Germany", "Malawi", "Ghana", "South Africa", "Zambia", "Egypt", "Angola", "Kenya", "Libya", "Sudan", "South Sudan", "Eswatini", "Uganda", "Zimbabwe", "Guyana", "Trinidad & Tobago", "United Arab Emirates", "Afghanistan", "Brunei", "Iraq", "Jordan", "South Korea", "Kuwait", "Syria", "Yemen", "Albania", "Belgium", "Estonia", "Lesotho", "Botswana", "Tanzania", "Barbados", "Bahamas", "Jamaica", "Sao Tome & Principe"],
+    nonBlackCountries: [ 'China','Democratic Republic of Congo','United Kingdom','Spain','France','Switzerland','Hong Kong','Italy','Canada','Singapore','Mali','Norway','Japan','Bangladesh','Cameroon','Namibia','Algeria','Tunisia','Burkina Faso','Burundi','Benin','Central African Republic','Cape Verde','Eritrea','Ethiopia','Gambia','Guinea','Liberia','Morocco','Madagascar','Mauritania','Mauritius','Seychelles','Senegal','Chad','Togo','Chile','Colombia','Costa Rica','Dominican Republic','Ecuador','Grenada','Haiti','Mexico','Panama','Peru','Puerto Rico','Suriname','United States','Venezuela','Azerbaijan','Bahrain','Hong Kong','Indonesia','Iran','Kyrgyzstan','Cambodia','North Korea','Laos','Lebanon','Sri Lanka','Myanmar','Mongolia','Malaysia','Nepal','Oman','Philippines','Russia','Thailand','Tajikistan','Turkmenistan','Turkey','Taiwan','Vietnam','Andorra','Armenia','Austria','Bulgaria','Belarus','Czech Republic','Denmark','Georgia','Croatia','Djibouti','Ireland','Scotland','Israel','Somalia','Brazil','Rwanda','Finland','Sweden','Niger','Nigeria','India','Pakistan','Ivory Coast','Gabon','Sierra Leone','Argentina','Guatemala','Honduras','Uruguay','Nicaragua','El Salvador','Kazakhstan','Saudi Arabia','Uzbekistan','Bosnia & Herzegovina','Cyprus','Iceland','Australia','New Zealand','Hungary','Liechtenstein','Lithuania','Luxembourg','Latvia','Monaco','Moldova','Montenegro','Malta','Netherlands','Poland','Portugal','Romania','Serbia','Slovakia','Slovenia','San Marino','Tonga','Kiribati'],
+  } 
+}
+
 function handleAnswerMouseOver() {
   this.classList.add('hovered');
 }
@@ -7,7 +112,7 @@ function handleQuestionMouseOut() {
   this.classList.remove('hovered');
 }
 
-// Add event listeners for hover effect
+
 function addHoverEffectListeners() {
   document.querySelectorAll('.answer').forEach(function (answer) {
     answer.addEventListener('mouseover', handleAnswerMouseOver);
@@ -25,538 +130,11 @@ function removeHoverEffectListeners() {
   document.getElementById('question').removeEventListener('mouseout', handleQuestionMouseOut);
 }
 
-const questions = {
-  red: [
-    {
-      question: "RED",
-      answers: ["France", "United Kingdom", "Nigeria", "Austria"],
-      correctIndex: 2
-    },
-    {
-      question: "RED",
-      answers: ["Italy", "Spain", "Romania", "Rwanda"],
-      correctIndex: 3
-    },
-    {
-        question: "RED",
-        answers: ["Puerto Rico", "Poland", "Sierra Leone", "Slovenia"],
-        correctIndex: 2
-      },
-      {
-        question: "RED",
-        answers: ["Somalia", "Italy", "Syria", "Poland"],
-        correctIndex: 0
-      },
-      {
-        question: "RED",
-        answers: ["Hungary", "Sudan", "Sweden", "Singapore"],
-        correctIndex: 2
-      },
-      {
-        question: "RED",
-        answers: ["Thailand", "Puerto Rico", "Syria", "Ukraine"],
-        correctIndex: 3
-      },
-      {
-        question: "RED",
-        answers: ["Hungary", "Sudan", "Sweden", "Singapore"],
-        correctIndex: 2
-      },
-      {
-        question: "RED",
-        answers: ["Sudan", "United Kingdom", "Syria", "Scotland"],
-        correctIndex: 3
-      },
-      {
-        question: "RED",
-        answers: ["Wales", "Tanzania", "Uzbekistan", "China"],
-        correctIndex: 1
-      },
-      {
-        question: "RED",
-        answers: ["Uruguay", "Yemen", "Syria", "United Arab Emirates"],
-        correctIndex: 0
-      },
-      {
-        question: "RED",
-        answers: ["Algeria", "Armenia", "Argentina", "England"],
-        correctIndex: 2
-      },
-      {
-        question: "RED",
-        answers: ["Burkina Faso", "Costa Rica", "Colombia", "Ireland"],
-        correctIndex: 3
-      },
-      {
-        question: "RED",
-        answers: [ "Costa Rica", "Ivory Coast", "Thailand", "France"],
-        correctIndex: 1
-      },
-      {
-        question: "RED",
-        answers: ["Bosnia & Herzegovina" , "Armenia", "Algeria", "Spain"],
-        correctIndex: 0
-      },
-      {
-        question: "RED",
-        answers: ["Haiti", "Gabon", "Iceland", "Kyrgyzstan"],
-        correctIndex: 1
-      },
-      {
-        question: "RED",
-        answers: ["China" , "Kazakhstan", "Luxembourg", "Lithuania"],
-        correctIndex: 1
-      },
-      {
-        question: "RED",
-        answers: ["Indonesia", "Gambia", "Italy", "Lesotho"],
-        correctIndex: 3
-      },
-      {
-        question: "RED",
-        answers: ["Germany", "Wales", "Bahamas", "Armenia"],
-        correctIndex: 2
-      },
-      {
-        question: "RED",
-        answers: ["Bangladesh", "Chad", "Bolivia", "Brazil"],
-        correctIndex: 3
-      },
-      {
-        question: "RED",
-        answers: ["Chad", "Bolivia", "Ukraine", "Germany"],
-        correctIndex: 2
-      },
-      {
-        question: "RED",
-        answers: ["Trinidad & Tobago", "Nicaragua", "Montenegro", "Mexico"],
-        correctIndex: 1
-      },
-      {
-        question: "RED",
-        answers: ["Tunisia", "Tonga", "Ukraine", "Germany"],
-        correctIndex: 2
-      },
-      {
-        question: "RED",
-        answers: ["Mexico", "Bolivia", "England", "Pakistan"],
-        correctIndex: 3
-      },
-      {
-        question: "RED",
-        answers: ["Namibia", "Niger", "Oman", "Monaco"],
-        correctIndex: 1
-      },
-      {
-        question: "RED",
-        answers: ["Nepal", "France", "Sierra Leone", "Serbia"],
-        correctIndex: 2
-      },
-      {
-        question: "RED",
-        answers: ["Colombia", "Niger", "United Arab Emirates", "Burkina Faso"],
-        correctIndex: 1
-      },
-      {
-        question: "RED",
-        answers: ["Ireland", "Namibia", "Yemen", "Canada"],
-        correctIndex: 0
-      },
-      {
-        question: "RED",
-        answers: [ "Botswana", "Ivory Coast", "South Africa", "Republic of Congo"],
-        correctIndex: 1
-      },
-      {
-        question: "RED",
-        answers: [ "Singapore", "Luxembourg", "Senegal", "Djibouti"],
-        correctIndex: 3
-      },
-  ],
-  blue:
-  [ 
-      {
-        question: "BLUE",
-        answers: [ "Democratic Republic of Congo", "France", "Senegal", "Djibouti"],
-        correctIndex: 2
-      },
-      {
-        question: "BLUE",
-        answers: [ "Singapore", "Ukraine", "United Kingdom", "Australia"],
-        correctIndex: 0
-      },  
-      {
-        question: "BLUE",
-        answers: [ "Sweden", "France", "Cameroon", "Rwanda"],
-        correctIndex: 2
-      },
-      {
-        question: "BLUE",
-        answers: [ "Italy", "Botswana", "Democratic Republic of Congo", "Brazil"],
-        correctIndex: 0
-      },
-      {
-        question: "BLUE",
-        answers: [ "China", "New Zealand", "Sierra Leone", "Estonia"],
-        correctIndex: 0
-      },
-      {
-        question: "BLUE",
-        answers: [ "Slovakia", "Serbia", "Bangladesh", "United States"],
-        correctIndex: 2
-      },
-      {
-        question: "BLUE",
-        answers: [ "China", "New Zealand", "Sierra Leone", "Estonia"],
-        correctIndex: 0
-      },
-      {
-        question: "BLUE",
-        answers: [ "Slovenia", "Scotland", "Australia", "Yemen"],
-        correctIndex: 3
-      },
-      {
-        question: "BLUE",
-        answers: [ "Russia", "Japan", "Finland", "Estonia"],
-        correctIndex: 1
-      },
-      {
-        question: "BLUE",
-        answers: [ "El Salvador", "Lesotho", "Liberia", "Lithuania"],
-        correctIndex: 3
-      },
-      {
-        question: "BLUE",
-        answers: [ "Lebanon", "Luxembourg", "South Korea", "Israel"],
-        correctIndex: 0
-      },
-      {
-        question: "BLUE",
-        answers: [ "Honduras", "Iran", "Liberia", "Greece"],
-        correctIndex: 1
-      },
-      {
-        question: "BLUE",
-        answers: [ "Lebanon", "Luxembourg", "South Korea", "Israel"],
-        correctIndex: 0
-      },
-      {
-        question: "BLUE",
-        answers: [ "Cape Verde", "Cuba", "Egypt", "Gambia"],
-        correctIndex: 1
-      },
-      {
-        question: "BLUE",
-        answers: [ "Lebanon", "Luxembourg", "South Korea", "Israel"],
-        correctIndex: 0
-      },
-      {
-        question: "BLUE",
-        answers: [ "Bulgaria", "Central African Republic", "Egypt", "Chile"],
-        correctIndex: 0
-      },
-      {
-        question: "BLUE",
-        answers: [ "Chad", "Barbados", "Bosnia and Herzegovina", "Poland"],
-        correctIndex: 3
-      },
-      {
-        question: "BLUE",
-        answers: [ "Hong Kong", "Jordan", "Bolivia", "Gabon"],
-        correctIndex: 2
-      },
-      {
-        question: "BLUE",
-        answers: [ "Iraq", "Cape Verde", "Egypt", "Laos"],
-        correctIndex: 0
-      },
-      {
-        question: "BLUE",
-        answers: [ "Belgium", "Armenia", "Andorra", "Croatia"],
-        correctIndex: 0
-      },
-      {
-        question: "BLUE",
-        answers: [ "Eritrea", "Haiti", "Iceland", "Denmark"],
-        correctIndex: 2
-      },
-],
-green:
-  [ 
-      {
-        question: "GREEN",
-        answers: [ "Bangladesh", "France", "Senegal", "Ireland"],
-        correctIndex: 1
-      },
-      {
-        question: "GREEN",
-        answers: [ "Singapore", "Ivory Coast", "Pakistan", "Wales"],
-        correctIndex: 0
-      },  
-      {
-        question: "GREEN",
-        answers: [ "Senegal", "South Africa", "Cameroon", "Japan"],
-        correctIndex: 3
-      },
-      {
-        question: "GREEN",
-        answers: [ "Russia", "Rwanda", "Guinea", "Brazil"],
-        correctIndex: 0
-      },
-      {
-        question: "GREEN",
-        answers: [ "Eritrea", "New Zealand", "Sierra Leone", "Gabon"],
-        correctIndex: 1
-      },
-      {
-        question: "GREEN",
-        answers: [ "Ghana", "Serbia", "Bangladesh", "Guinea"],
-        correctIndex: 1
-      },
-      {
-        question: "GREEN",
-        answers: [ "Italy", "Hungary", "Iran", "Estonia"],
-        correctIndex: 3
-      },
-      {
-        question: "GREEN",
-        answers: [ "Kuwait", "Jordan", "Latvia", "Benin"],
-        correctIndex: 2
-      },
-      {
-        question: "GREEN",
-        answers: [ "Bulgaria", "Afghanistan", "Burundi", "Armenia"],
-        correctIndex: 3
-      },
-      {
-        question: "GREEN",
-        answers: [ "Zambia", "Wales", "Albania", "Azerbaijan"],
-        correctIndex: 2
-      },
-      {
-        question: "GREEN",
-        answers: [ "Belgium", "Benin", "Comoros", "Djibouti"],
-        correctIndex: 0
-      },
-      {
-        question: "GREEN",
-        answers: [ "Niger", "Nigeria", "Namibia", "Nepal"],
-        correctIndex: 1
-      },
-      {
-        question: "GREEN",
-        answers: [ "Netherlands", "Pakistan", "Mozambique", "Portugal"],
-        correctIndex: 0
-      },
-      {
-        question: "GREEN",
-        answers: [ "Saudi Arabia", "Sri Lanka", "Turkey", "Togo"],
-        correctIndex: 2
-      },
-      {
-        question: "GREEN",
-        answers: [ "Zimbabwe", "Vietnam", "Togo", "Uzbekistan"],
-        correctIndex: 1
-      },
-      {
-        question: "GREEN",
-        answers: [ "Pakistan", "Rwanda", "Sudan", "Tajikistan"],
-        correctIndex: 0
-      },
-      {
-        question: "GREEN",
-        answers: [ "Tanzania", "South Africa", "Saudi Arabia", "Monaco"],
-        correctIndex: 3
-      },
-      {
-        question: "GREEN",
-        answers: [ "Madagascar", "Malawi", "Moldova", "Tanzania"],
-        correctIndex: 2
-      },
-      {
-        question: "GREEN",
-        answers: [ "Switzerland", "Mexico", "Ghana", "Mauritania"],
-        correctIndex: 0
-      },
-      {
-        question: "GREEN",
-        answers: [ "Somalia", "Mali", "Sao Tome and Principe", "Turkmenistan"],
-        correctIndex: 0
-      },
-      {
-        question: "GREEN",
-        answers: [ "Eritrea", "Croatia", "Ethiopia", "Guyana"],
-        correctIndex: 1
-      },
-    ],
-    white: [
-    {
-      question: "WHITE",
-      answers: [ "Cyprus", "Mali", "Estonia", "Georgia"],
-      correctIndex: 1
-    },
-    {
-      question: "WHITE",
-      answers: [ "England", "Croatia", "Australia", "Guyana"],
-      correctIndex: 3
-    },
-    {
-      question: "WHITE",
-      answers: [ "England", "Guatemala", "Gabon", "Wales"],
-      correctIndex: 2
-    },
-    {
-      question: "WHITE",
-      answers: [ "Germany", "Italy", "Australia", "Honduras"],
-      correctIndex: 0
-    },
-    {
-        question: "WHITE",
-        answers: [ "Niger", "United States", "Namibia", "China"],
-        correctIndex: 3
-      },
-      {
-        question: "WHITE",
-        answers: [ "North Macedonia", "Kiribati", "Monaco", "Malta"],
-        correctIndex: 0
-      },
-      {
-        question: "WHITE",
-        answers: [ "Saudi Arabia", "Chile", "Liechtenstein", "Peru"],
-        correctIndex: 2
-      },
-      {
-        question: "WHITE",
-        answers: [ "Georgia", "Vietnam", "Indonesia", "Russia"],
-        correctIndex: 1
-      },
-      {
-        question: "WHITE",
-        answers: [ "Rwanda", "Kenya", "Sudan", "Costa Rica"],
-        correctIndex: 0
-      },
-      {
-        question: "WHITE",
-        answers: [ "Tanzania", "England", "Peru", "Poland"],
-        correctIndex: 0
-      },
-      {
-        question: "WHITE",
-        answers: [ "Israel", "Panama", "Moldova", "Phillipines"],
-        correctIndex: 2
-      },
-      {
-        question: "WHITE",
-        answers: [ "Switzerland", "Cyprus", "Mexico" , "Mauritania"],
-        correctIndex: 3
-      },
-      {
-        question: "WHITE",
-        answers: [ "Somalia", "Argentina", "Sao Tome and Principe", "Lebanon"],
-        correctIndex: 2
-      },
-      {
-        question: "WHITE",
-        answers: [ "Eritrea", "Croatia", "Niger", "Japan"],
-        correctIndex: 0
-      },
-  ],
-  black: [
-    {
-      question: "BLACK",
-      answers: [ "Germany", "Mali", "Estonia", "Ghana"],
-      correctIndex: 1
-    },
-    {
-      question: "BLACK",
-      answers: [ "Egypt", "Belgium", "Austria", "Barbados"],
-      correctIndex: 2
-    },
-    {
-      question: "BLACK",
-      answers: [ "Syria", "Botswana", "Gabon", "Kenya"],
-      correctIndex: 2
-    },
-    {
-      question: "BLACK",
-      answers: [ "Luxembourg", "Lesotho", "South Korea", "Iraq"],
-      correctIndex: 0
-    },
-    {
-      question: "BLACK",
-      answers: [ "Kuwait", "Kenya", "Bahamas", "North Korea"],
-      correctIndex: 3
-    },
-    {
-      question: "BLACK",
-      answers: [ "Jordan", "Brunei", "Syria", "Indonesia"],
-      correctIndex: 3
-    },
-    {
-      question: "BLACK",
-      options: ["Germany", "South Africa", "Japan", "Jamaica"],
-      correctIndex: 2
-    }
-    
-  ],
-yellow: [
-  {
-    question: "YELLOW",
-    answers: [ "Ecuador", "Mali", "Estonia", "Ghana"],
-    correctIndex: 2
-  },
-  {
-    question: "YELLOW",
-    answers: [ "Guinea", "Belgium", "Austria", "Gabon"],
-    correctIndex: 2
-  },
-  {
-    question: "YELLOW",
-    answers: [ "Sudan", "Lithuania", "Ethiopia", "Republic of Congo"],
-    correctIndex: 0
-  },
-  {
-    question: "YELLOW",
-    answers: [ "Sweden", "Uzbekistan", "Ukraine", "Ecuador"],
-    correctIndex: 1
-  },
-  {
-    question: "YELLOW",
-    answers: [ "Zambia", "Spain", "Romania", "Rwanda"],
-    correctIndex: 0
-  },
-  {
-    question: "YELLOW",
-    answers: [ "Sweden", "Senegal", "Tanzania", "Puerto Rico"],
-    correctIndex: 3
-  },
-  {
-    question: "YELLOW",
-    answers: [ "Ukraine", "Uganda", "Rwanda", "Oman"],
-    correctIndex: 3
-  },
-  {
-    question: "YELLOW",
-    answers: [ "Pakistan", "Mozambique", "Togo", "Venezuela"],
-    correctIndex: 0
-  },
-  {
-    question: "YELLOW",
-    answers: [ "Moldova", "Togo", "Uzbekistan", "Senegal"],
-    correctIndex: 2
-  },
-  {
-    question: "YELLOW",
-    answers: [ "Sudan", "Seychelles", "Andorra", "Chad"],
-    correctIndex: 0
-  },
-]
-};
+const backgroundColors = ["red", "blue", "green", "black"]
+//  "black", "white", "yellow"]
 
-const backgroundColors = ["yellow","red", "blue", "green", "white", "black"]
-let currentQuestionIndex = -1;
-
-function startQuiz() {
+function startQuiz(setDifficulty) {
+  difficulty = setDifficulty
   document.getElementById("intro-container").style.display = "none";
   document.getElementById("quiz-container").style.display = "block";
   document.body.style.cssText = 'background-image: none';
@@ -565,6 +143,7 @@ function startQuiz() {
 }
 
 function nextQuestion() {
+
     do {
       newColor = getRandomColor();
     } while (!questions[newColor] || questions[newColor].length === 0);
@@ -588,17 +167,57 @@ function nextQuestion() {
   document.getElementById("question-container").style.backgroundColor = newColor;
   document.querySelector(".next-btn").style.display = "none";
 
-  currentQuestionIndex = (currentQuestionIndex + 1) % questions[newColor].length;
-  const currentQuestion = questions[newColor][currentQuestionIndex];
+  questionCombination = questions[newColor][Math.floor(Math.random() * 4)];
 
-  document.getElementById("question").textContent = currentQuestion.question;
+  let selectedWords = [];
+  
+  answerCombination = questionCombination.map((item) => {
+    let availableWords
+      if (newColor === "red") {
+        availableWords = (item === 0) ? countries[difficulty].redCountries : countries[difficulty].nonRedCountries;
+      availableWords = availableWords.filter(word => !selectedWords.includes(word));
+      let selectedWord = availableWords[Math.floor(Math.random() * availableWords.length)];
+      selectedWords.push(selectedWord);
+      return selectedWord;
+      } else if (newColor === "blue") {
+      availableWords = (item === 0) ? countries[difficulty].blueCountries : countries[difficulty].nonBlueCountries;
+      availableWords = availableWords.filter(word => !selectedWords.includes(word));
+      let selectedWord = availableWords[Math.floor(Math.random() * availableWords.length)];
+      selectedWords.push(selectedWord);
+      return selectedWord;
+      } else if (newColor === "green") {
+        availableWords = (item === 0) ? countries[difficulty].greenCountries : countries[difficulty].nonGreenCountries;
+      availableWords = availableWords.filter(word => !selectedWords.includes(word));
+      let selectedWord = availableWords[Math.floor(Math.random() * availableWords.length)];
+      selectedWords.push(selectedWord);
+      return selectedWord;
+      } else if (newColor === "black") {
+      availableWords = (item === 0) ? countries[difficulty].blackCountries : countries[difficulty].nonBlackCountries;
+      availableWords = availableWords.filter(word => !selectedWords.includes(word));
+      let selectedWord = availableWords[Math.floor(Math.random() * availableWords.length)];
+      selectedWords.push(selectedWord);
+      return selectedWord
+      } else if (newColor === "yellow") {
+        availableWords = (item === 0) ? countries[difficulty].yellowCountries : countries[difficulty].nonYellowCountries;
+      availableWords = availableWords.filter(word => !selectedWords.includes(word));
+      let selectedWord = availableWords[Math.floor(Math.random() * availableWords.length)];
+      selectedWords.push(selectedWord);
+      return selectedWord;
+      } else if (newColor === "white") {
+      availableWords = (item === 0) ? countries[difficulty].whiteCountries : countries[difficulty].nonWhiteCountries;
+      availableWords = availableWords.filter(word => !selectedWords.includes(word));
+      let selectedWord = availableWords[Math.floor(Math.random() * availableWords.length)];
+      selectedWords.push(selectedWord);
+      return selectedWord
+}});
+
+
+  document.getElementById("question").textContent = newColor.toUpperCase()
 
   const answerButtons = document.querySelectorAll(".answer");
-  if (!currentQuestion.answers) {
-    nextQuestion()
-  } else {
-  for (let i = 0; i < currentQuestion.answers.length; i++) {
-    answerButtons[i].textContent = currentQuestion.answers[i];
+
+  for (let i = 0; i < answerCombination.length; i++) {
+    answerButtons[i].textContent = answerCombination[i]
     answerButtons[i].style.backgroundColor = "black";
     answerButtons[i].style.color = "white";
     answerButtons[i].disabled = false;
@@ -622,8 +241,6 @@ document.querySelectorAll('.answer').forEach(function (answer) {
 });
 
 document.getElementById('question').addEventListener('mouseout', handleQuestionMouseOut);
-
-}
   
 
 function getRandomColor() {
@@ -633,33 +250,34 @@ function getRandomColor() {
 }
 
 function checkAnswer(index) {
-  const currentQuestion = questions[newColor][currentQuestionIndex];
-  const selectedAnswer = currentQuestion.answers[index];
+  const currentQuestion = questions[newColor]
+
+  const selectedAnswerIndex = questionCombination.indexOf(1);
+  const selectedAnswer = answerCombination[questionCombination.indexOf(1)]
 
   removeHoverEffectListeners()
 
-  if (index === currentQuestion.correctIndex) {
+  if (index === selectedAnswerIndex) {
     document.body.style.backgroundColor = "#4CAF50";
     document.getElementById("question-container").style.backgroundColor = "#4CAF50";
     document.getElementById('question').style.backgroundColor = "#4CAF50"
-    document.getElementById('question').textContent = "CORRECT"
+    document.getElementById('question').textContent = "CORRECT ✅"
   } else {
     document.body.style.backgroundColor = "#FF5733";
     document.getElementById("question-container").style.backgroundColor = "#FF5733";
     document.getElementById('question').style.backgroundColor = "#FF5733"
-    document.getElementById('question').textContent = "WRONG"
+    document.getElementById('question').textContent = "WRONG ❌"
   }
 
   document.querySelectorAll(".answer").forEach((button) => {
     button.disabled = true;
-    if (questions[newColor][currentQuestionIndex].answers.indexOf(button.textContent) === currentQuestion.correctIndex) {
+    if (button.textContent === selectedAnswer) {
       button.style.backgroundColor = "#4CAF50";
     } else {
       button.style.backgroundColor = "#FF5733";
     }
   });
 
-  // Show the next button immediately
   document.querySelectorAll(".answer").forEach((button) => {
     if (button.textContent === "Italy") {
       button.textContent += " 🇮🇹"
@@ -1003,7 +621,7 @@ function checkAnswer(index) {
       button.textContent += " 🇦🇺"
     } else if (button.textContent === "New Zealand") {
       button.textContent += " 🇳🇿"
-    } else if (button.textContent === "Tongo") {
+    } else if (button.textContent === "Tonga") {
       button.textContent += " 🇹🇴"
     } else if (button.textContent === "Kiribati") {
       button.textContent += " 🇰🇮"
