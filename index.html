@@ -13,13 +13,15 @@
 <body>
 
 <div id="intro-container">
-  <h1>Welcome to King's Colour</h1>
-  <p>Press 'Start' to begin the challenge.</p>
-  <button onclick="startQuiz('easy')">Easy</button>
-  <button onclick="startQuiz('normal')">Normal</button>
-  <button onclick="startQuiz('hard')">Hard</button>
-  <button onclick="startQuiz('insane')">Insane</button>
-  <button onclick="startQuiz('allCountries')">All Countries</button>
+  <h1 id="welcome-heading">Welcome to King's Colour</h1>
+  <p id="welcome-sub-heading">Press 'Start' to begin the challenge.</p>
+  <div class="button-container"> 
+    <button class="difficulty-button" onclick="startQuiz('easy')">Easy</button>
+    <button class="difficulty-button" onclick="startQuiz('normal')">Normal</button>
+    <button class="difficulty-button" onclick="startQuiz('hard')">Hard</button>
+    <button class="difficulty-button" onclick="startQuiz('insane')">Insane</button>
+    <button class="difficulty-button" onclick="startQuiz('allCountries')">All Countries</button>
+  </div>
 </div>
 
 <div id="quiz-container">

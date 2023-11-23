@@ -64,3 +64,36 @@ body {
   .answer:hover {
   background-color: rgb(96, 96, 96) !important;
 }
+
+.difficulty-button {
+  padding: 0.4rem 1rem;
+  font-size: 1.5rem;
+  font-family: 'Roboto Mono' ;
+  box-shadow: 3px 5px 5px black;
+  cursor: pointer;
+}
+
+#welcome-heading {
+  font-weight: bold;
+  font-size: 2.5rem;
+  color: white;
+  text-shadow: 5px 5px 5px black;
+}
+
+#welcome-sub-heading {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: white;
+  text-shadow: 5px 5px 5px black;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  width: 30vw;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  margin-top: 3rem;
+  gap: 1rem;
+}
